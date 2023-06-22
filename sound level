@@ -1,0 +1,55 @@
+<span id="volumeBox"></span>
+
+// Get our volume box element
+const mystatus = document. getElementById('volumeBox');
+let mediaStreamSource = null,
+     scriptProcessor = null;
+// Function to start detecting the volume
+function beginDetect() {
+     let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+         // Get the user's media information
+         navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
+             // Input the sound from the microphone into this object
+             mediaStreamSource = audioContext.createMediaStreamSource(stream);
+             // Create an audio analysis object, the sample buffer size is 4096, and the input and output are mono
+             scriptProcessor = audioContext.createScriptProcessor(4096,1,1);
+             // Connect the analysis object to the microphone audio
+             mediaStreamSource.connect(scriptProcessor);
+             // Solve Chrome's own bug
+             scriptProcessor.connect(audioContext.destination);
+
+             // start processing audio
+             scriptProcessor. onaudioprocess = (e) => {
+                 // Get the input audio of the buffer and convert it to a 32-bit floating-point array containing PCM channel data
+                 const buffer = e.inputBuffer.getChannelData(0);
+                 // Get the maximum volume value in the buffer
+                 const maxVal = Math.max.apply(Math, buffer);
+                 // display volume value
+                 mystatus.innerHTML = `Your volume value: ${ Math.round(maxVal * 100)}`;
+             };
+         }).catch((error) => {
+             mystatus.innerHTML = `There seems to be something wrong getting the audio. ${error}`;
+         })
+     } else {
+         mystatus.innerHTML = 'Your browser does not support recognizing sound volume';
+     }
+};
+// turn off detection volume
+function stopDetect() {
+     scriptProcessor. disconnect
+     ?scriptProcessor. disconnect()
+     : console.log('No need to close anything');
+}
+
+// Partially add code in the voiceConversion function
+if (type === 'start') {
+     // open
+     beginDetect();
+     recognition. start();
+} else {
+     // stop
+     stopDetect();
+     recognition. stop();
+}
