@@ -30,7 +30,7 @@ from keras.callbacks import ModelCheckpoint
 from keras.callbacks import EarlyStopping
 
 # %%
-path = "Ryerson Audio-Visual Database of Emotional Speech and Song (RAVDESS)"
+path = "../Ryerson Audio-Visual Database of Emotional Speech and Song (RAVDESS)"
 file_list = os.listdir(path)
 
 # %%
@@ -138,6 +138,9 @@ df_label = df_files[['emotion']].copy()
 le = preprocessing.LabelEncoder()
 df_label.emotion = le.fit_transform(df_label.emotion)
 
+pd.set_option('display.max_rows', 10)
+# %%
+display(df_files)
 # %%
 #Split between train and test and ENCODE
 random_num = 7 #random.randint(0,100) 
@@ -196,6 +199,8 @@ for i in range(len(X_train)):
         manipulated_audio_pitch.append(data)
         manipulated_onehot_label_pitch.append(label_onehot_train[i])
 
+
+
 # %%
 X_train_manu = np.concatenate((X_train,np.asarray(manipulated_audio),
                                np.asarray(manipulated_audio_pitch)),axis = 0)
@@ -203,6 +208,8 @@ X_train_manu = np.concatenate((X_train,np.asarray(manipulated_audio),
 
 label_onehot_train_manu = np.concatenate((label_onehot_train,np.asarray(manipulated_onehot_label),
                                           np.asarray(manipulated_onehot_label_pitch)),axis = 0)
+
+print(X_train_manu[:5])
 
 # %%
 #Change audio data to spectrograms
@@ -255,6 +262,8 @@ X_test_norm_re_n, X_vald, label_onehot_test_n, y_vald = train_test_split((X_test
                                                     , test_size=0.1
                                                     , shuffle=True
                                                     , random_state=random_num)
+
+
 
 #%%
 #Convert to array
