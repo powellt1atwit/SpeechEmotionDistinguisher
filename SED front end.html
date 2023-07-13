@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Spoken Emotion Distinguisher</title>
+  <style>
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    input[type="submit"] {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Spoken Emotion Distinguisher</h1>
+    <form id="emotionForm">
+      <div class="form-group">
+        <label for="spokenText">Enter spoken text:</label>
+        <textarea id="spokenText" name="spokenText" rows="4" cols="50" required></textarea>
+      </div>
+      <div class="form-group">
+        <input type="submit" value="Analyze Emotion">
+      </div>
+    </form>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    document.getElementById('emotionForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // Prevent form submission
+
+      var spokenText = document.getElementById('spokenText').value;
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            var result = document.getElementById('result');
+            result.innerHTML = '<h2>Emotion Analysis Result:</h2>' +
+              '<p><strong>Spoken Text:</strong> ' + spokenText + '</p>' +
+              '<p><strong>Predicted Emotion:</strong> ' + response.emotion + '</p>';
+          } else {
+            console.error('Request failed. Status: ' + xhr.status);
+            var result = document.getElementById('result');
+            result.innerHTML = '<p>An error occurred while analyzing emotion. Please try again later.</p>';
+          }
+        }
+      };
+
+      xhr.open('POST', '/analyze-emotion', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify({ spokenText: spokenText }));
+    });
+  </script>
+</body>
+</html>
