@@ -1,0 +1,118 @@
+@import url("https://fonts.googleapis.com/css?family=DM+Sans");
+
+image[name="logo"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+}
+
+header {
+  background-color: #fefeff;
+}
+
+h1 {
+  float: right;
+  padding-right: 37%;
+  font-family: "DM Sans", sans-serif;
+  font-size: 40px;
+  margin-top: 10px;
+}
+
+nav {
+  background-color: #1f3465;
+  padding-bottom: 1px;
+  padding-top: 1px;
+}
+
+.directory a {
+  color: black;
+  font-family: "DM Sans", sans-serif;
+  font-size: larger;
+  float: none;
+  position: relative;
+  left: 34%;
+  border-style: solid;
+  border-width: 1px;
+  padding-top: 2px;
+  padding-bottom: 3px;
+  padding-left: 50px;
+  padding-right: 50px;
+  background-color: #fefeff;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: lightgray;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin-top: 50px; */
+}
+
+input[type="file"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+p {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.output {
+  font-weight: bold;
+  font-size: x-large;
+}
+
+main {
+  background-color: white;
+  margin-left: 14%;
+  margin-right: 14%;
+  margin-top: 0.9%;
+}
+
+.help {
+  margin-top: 0%;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  font-size: x-small;
+  background-color: #1f3465;
+  color: grey;
+  text-align: center;
+  padding-left: 650px;
+  padding-right: 688.5px;
+  margin-left: auto;
+  padding-top: 10px;
+}
+
+ul {
+  list-style-type: none;
+}

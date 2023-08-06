@@ -45,6 +45,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
 #%%
+#Audio file extraction
 Ravdess = ('audio_speech_actors_01-24/')
 
 ravdess_directory_list = os.listdir(Ravdess)
@@ -73,6 +74,7 @@ Ravdess_df.Emotions.replace({1:'neutral', 2:'calm', 3:'happy', 4:'sad', 5:'angry
 Ravdess_df.head()
 
 # %%
+#Data Manipulation
 def noise(data):
     noise_amp = 0.035*np.random.uniform()*np.amax(data)
     data = data + noise_amp*np.random.normal(size=data.shape[0])
@@ -93,6 +95,7 @@ path = np.array(Ravdess_df.Path)[1]
 data, sample_rate = librosa.load(path)
 
 # %%
+#Feature Extraction
 def extract_features(data):
     # ZCR
     result = np.array([])
@@ -140,6 +143,7 @@ def get_features(path):
     return result
 
 #%%
+#Create arrays of extracted features
 X, Y = [], []
 for path, emotion in zip(Ravdess_df.Path, Ravdess_df.Emotions):
     feature = get_features(path)
@@ -149,6 +153,7 @@ for path, emotion in zip(Ravdess_df.Path, Ravdess_df.Emotions):
         Y.append(emotion)
 
 # %%
+#Create Features csv
 Features = pd.DataFrame(X)
 Features['labels'] = Y
 Features.to_csv('features.csv', index=False)
@@ -158,6 +163,7 @@ Features.head()
 X = Features.iloc[: ,:-1].values
 Y = Features['labels'].values
 # %%
+#Encode data and save encoder
 encoder = OneHotEncoder()
 Y = encoder.fit_transform(np.array(Y).reshape(-1,1)).toarray()
 Y.shape
@@ -165,9 +171,11 @@ e_path = "encoder.pkl"
 with open(e_path, 'wb') as file:
     pickle.dump(encoder, file)
 # %%
+#Split data for training and testing
 x_train, x_test, y_train, y_test = train_test_split(X, Y, random_state=0, shuffle=True)
 x_train.shape, y_train.shape, x_test.shape, y_test.shape
 # %%
+#Train scaler and save scaler
 scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
@@ -176,10 +184,12 @@ with open(s_path, 'wb') as file:
     pickle.dump(scaler, file)
 x_train.shape, y_train.shape, x_test.shape, y_test.shape
 # %%
+#Fix training and testing dimensions for neural network
 x_train = np.expand_dims(x_train, axis=2)
 x_test = np.expand_dims(x_test, axis=2)
 x_train.shape, y_train.shape, x_test.shape, y_test.shape
 # %%
+#Construct the neural network
 model=Sequential()
 model.add(Conv1D(256, kernel_size=5, strides=1, padding='same', activation='relu', input_shape=(x_train.shape[1], 1)))
 model.add(MaxPooling1D(pool_size=5, strides = 2, padding = 'same'))
@@ -203,11 +213,13 @@ model.compile(optimizer = 'adam' , loss = 'categorical_crossentropy' , metrics =
 
 model.summary()
 # %%
+#Run model on data
 rlrp = ReduceLROnPlateau(monitor='loss', factor=0.4, verbose=0, patience=2, min_lr=0.0000001)
 hist=model.fit(x_train, y_train, batch_size=64, epochs=50, validation_data=(x_test, y_test), callbacks=[rlrp])
 # %%
 print("Accuracy of our model on test data : " , model.evaluate(x_test,y_test)[1]*100 , "%")
 
+#Training and Validation Loss Graph
 loss = hist.history['loss']
 val_loss = hist.history['val_loss']
 epochs = range(1, len(loss) + 1)
@@ -220,7 +232,7 @@ plt.legend()
 plt.show()
 
 # %%
-
+#Training and Validation Accuracy Graph
 acc = hist.history['accuracy']
 val_acc = hist.history['val_accuracy']
 plt.plot(epochs, acc, 'bo', label='Training acc')
@@ -232,12 +244,14 @@ plt.legend()
 plt.show()
 
 # %%
+#Perform prediction on test data using model
 pred_test = model.predict(x_test)
 y_pred = encoder.inverse_transform(pred_test)
 
 y_test = encoder.inverse_transform(y_test)
 
 # %%
+#Create a dataframe of predicted data and actual data
 df = pd.DataFrame(columns=['Predicted Labels', 'Actual Labels'])
 df['Predicted Labels'] = y_pred.flatten()
 df['Actual Labels'] = y_test.flatten()
@@ -245,6 +259,7 @@ df['Actual Labels'] = y_test.flatten()
 df.head(10)
 
 # %%
+#Construct a confusion matrix for actual vs predicted classification
 cm = confusion_matrix(y_test, y_pred)
 plt.figure(figsize = (12, 10))
 cm = pd.DataFrame(cm , index = [i for i in encoder.categories_] , columns = [i for i in encoder.categories_])
@@ -258,6 +273,7 @@ plt.show()
 print(classification_report(y_test, y_pred))
 
 # %%
+#Save model
 cnn_path = "model.pkl"
 with open(cnn_path, 'wb') as file:
     pickle.dump(model, file)

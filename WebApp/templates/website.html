@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speech Emotion Distinguisher</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <img
+        src="{{url_for('static', filename='images/logo.png')}}"
+        alt="Logo"
+        name="logo"
+      />
+      <h1>Speech Emotion Distinguisher</h1>
+    </header>
+
+    <nav class="directory">
+      <a href="/">Home</a> | <a href="tips">Emotion Tips</a> |
+      <a href="about">About</a>
+    </nav>
+
+    <main>
+      <form name="form" method="POST" enctype="multipart/form-data">
+        <br />
+        <label for="audio">Audio File (.wav)</label>
+        <input
+          type="file"
+          id="audio"
+          name="audio"
+          accept="audio/wav"
+          required
+        />
+        <button type="submit">Run Analysis</button>
+      </form>
+      <p class="output">{{output}}</p>
+
+      <p>Not what you were going for?</p>
+      <p class="help">Check out our <a href="tips">Emotion Tips</a> page</p>
+    </main>
+    <footer>
+      The function and information contained on this website is for educational
+      purposes only. It may not be used for any commercial use.
+      <ul>
+        Authors:
+        <li>Thomas Powell</li>
+        <li>Ryan Casey</li>
+        <li>Bill Pan</li>
+      </ul>
+    </footer>
+  </body>
+</html>

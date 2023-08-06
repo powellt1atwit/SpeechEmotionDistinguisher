@@ -15,12 +15,14 @@ app = Flask(__name__)
 def home():
     if request.method == 'POST':
         
+        #Import model and import user input
         clf = joblib.load("model.pkl")
 
         f = request.files['audio']
         f.save(secure_filename(f.filename))
         data, sample_rate = lib.load(f.filename)
         
+        #Run preprocessing on user data
         def extract_features(data):
             # ZCR
             result = np.array([])
@@ -71,6 +73,7 @@ def home():
 
         X = np.expand_dims(X, axis=2)
 
+        #Run model to predict on user input and display prediction classification
         pred = clf.predict(X)[0]
         print(pred.shape)
 

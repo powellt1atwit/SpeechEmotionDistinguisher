@@ -1,0 +1,31 @@
+Packages Required for Running Algorithm:
+Python
+Kaggle
+Zipfile
+Pickle
+Pandas
+Numpy
+Librosa
+Seaborn
+Matplotlib
+Sklearn
+Tensorflow
+Keras
+IPython
+
+Packages Required for Running Website:
+Python
+Flask
+Pandas
+Numpy
+joblib
+librosa
+tensorflow
+sklearn
+werkzeug
+
+Steps for Running Website:
+1. Open Terminal
+2. Navigate to WebApp directory
+3. Enter 'py app.py'
+4. Navigate to IP provided by Flask debugger in browser	#Form for Machine Learning model requires wav audio file
