@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles3.css') }}"
+    />
+  </head>
+  <body>
+    <!-- Add explanation on how analyzer works and goal of website -->
+    <header>
+      <img
+        src="{{url_for('static', filename='images/logo.png')}}"
+        alt="Logo"
+        name="logo"
+      />
+      <h1>Speech Emotion Distinguisher</h1>
+    </header>
+
+    <nav class="directory">
+      <a href="/">Home</a> | <a href="/tips">Emotion Tips</a> |
+      <a href="/about">About</a>
+    </nav>
+
+    <section class="about">
+      <h2>About the Website</h2>
+      <p>
+        Our project is called the Speech-Emotion Distinguisher. This project is
+        what we made for our Senior Capstone project over the Summer of 2023.
+        What this application does is use a convolutional Neural Network
+        embedded into a Python (Flask) backend. The CNN is trained on a large
+        speech emotion dataset and analyzes certain features to determine the
+        closest emotional match. The highest accuracy we were able to achieve
+        was around 70% for the eight-class classification.
+      </p>
+      <a
+        href="https://github.com/powellt1atwit/SpeechEmotionDistinguisher"
+        target="_blank"
+        >Github</a
+      >
+    </section>
+    <footer>
+      The function and information contained on this website is for educational
+      purposes only. It may not be used for any commercial use.
+      <ul>
+        Authors:
+        <li>Thomas Powell</li>
+        <li>Ryan Casey</li>
+        <li>Bill Pan</li>
+      </ul>
+    </footer>
+  </body>
+</html>
